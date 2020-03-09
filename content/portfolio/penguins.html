@@ -1,0 +1,299 @@
+---
+title: "Predicting Penguin Mass"
+author: "Cameryn Brock"
+date: "2019-12-09"
+output: html_document
+image: img/portfolio/penguin.png
+showonlyimage: false
+weight: 10
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p><img src="/img/portfolio/adelie_penguin.jpg" /></p>
+<p>Adelie Penguin (<em>Pygoscelis adeliae</em>) jumping into finals week.
+Credit: <a href="https://kids.nationalgeographic.com/animals/birds/adelie-penguin/">Ralph Lee Hopkins, <em>National Geographic</em></a></p>
+<p>Here we explored the potential for predicting penguin mass in Adelie, Chinstrap, and Gentoo penguins considering flipper length, sex, and species. We used data recorded at Palmer Station, LTER, Antarctica, compiled from the Environmental Data Initative (Gorman 2017).</p>
+<p><img src="/portfolio/penguins_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><em><strong>Figure 1.</strong> Penguin species, sex, flipper length, and body mass. Data was recorded at Palmer Station, LTER, Antarctica and compiled from the Environmental Data Initiative (Gorman 2017)</em></p>
+<p><strong>Key Takeaways</strong></p>
+<ul>
+<li>There appears to be a positive correlation between body mass and flipper length among both sexes in all species. This makes sense intuitively, as both likely increase with penguin overall size (i.e. height).</li>
+<li>Gentoo penguins are the largest in terms of both body mass and flipper length. Chinstrap and adelie penguins are similar to each other in these regards, though it is difficult to determine how similar due to relatively less data for Gentoo penguins.</li>
+<li>In all three species, males tend to have a larger body mass and longer flipper length than females.</li>
+</ul>
+<p><em><strong>Table 1.</strong> Summary of a multi-linear regression for predicting penguin body mass (g) with sex (male, female), flipper length (mm), and species (adelie, gentoo, chinstrap) as predictive variables. The data analyzed was recorded at Palmer Station, LTER, Antarctica and compiled from the Environmental Data Initiative (Gorman 2017)</em></p>
+<center>
+<table style="text-align:center">
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="1" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Body Mass (g)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Flipper Length (mm)
+</td>
+<td>
+20.025<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(2.846)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Species: Chinstrap
+</td>
+<td>
+-87.634<sup>*</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(46.347)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Species: Gentoo
+</td>
+<td>
+836.260<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(85.185)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Sex: Male
+</td>
+<td>
+530.381<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(37.810)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+-365.817
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(532.050)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+333
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.867
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.865
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+295.565 (df = 328)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+534.024<sup>***</sup> (df = 4; 328)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
+</center>
+<p>We checked whether our model satisfies the assumption of homoscedasticity (constant variance) with a plot of residuals vs fitted values. The residuals appeared even on each side of the horizontal line, and therefore satisfy this assumption. In this plot, we can also see the data seems grouped (horizontally), likely due to differences among species and sex.</p>
+<p>We checked whether the residuals are normally distributed with a QQ plot. The QQ plot demonstrated a linear relationship, which confirms the residuals are normally distributed.</p>
+<p>Our adjusted R<sup>2</sup>, or coefficient of determination, of 0.865 means that 86.5% of the variance in penguin body mass is predictable from penguin flipper length, species, and sex.</p>
+<ul>
+<li><strong>Flipper Length</strong>: we expect body mass to be 20.03g <em>more</em> on average for each 1mm increase in flipper length, if all other variables remain the same.</li>
+<li><strong>Species, Chinstrap</strong>: we expect Chinstrap penguins to weigh 87.63g on average <em>less</em> than Adelie penguins, if all other variables remain the same.</li>
+<li><strong>Species, Gentoo</strong>: we expect Gentoo penguins to weigh 836.26g, on average, <em>more</em> than Adelie penguins, if all other variables remain the same.</li>
+<li><strong>Sex, Male</strong>: we expect male penguins to weigh 530.38g, on average, <em>more</em> than female penguins, if all other variables remain the same.</li>
+</ul>
+<p><em><strong>Table 2.</strong> Predicted values for body mass (g) with our multi linear regression model. Predictive variables include species, sex, and flipper length (mm). Data was recorded at Palmer Station, LTER, Antarctica, compiled from the Environmental Data Initiative (Gorman 2017).</em></p>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+Species
+</th>
+<th style="text-align:center;">
+Sex
+</th>
+<th style="text-align:center;">
+Flipper Length (mm)
+</th>
+<th style="text-align:center;">
+Predicted Body Mass (g)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+Chinstrap Penguin
+</td>
+<td style="text-align:center;">
+Female
+</td>
+<td style="text-align:center;">
+195
+</td>
+<td style="text-align:center;">
+3451
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Adelie Penguin
+</td>
+<td style="text-align:center;">
+Male
+</td>
+<td style="text-align:center;">
+205
+</td>
+<td style="text-align:center;">
+4270
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Gentoo Penguin
+</td>
+<td style="text-align:center;">
+Male
+</td>
+<td style="text-align:center;">
+220
+</td>
+<td style="text-align:center;">
+5406
+</td>
+</tr>
+</tbody>
+</table>
+<div id="citations" class="section level3">
+<h3>Citations</h3>
+<p><strong>Gorman K. 2017.</strong> Structural size measurements and isotopic signatures of foraging among adult male and female Adélie penguins (Pygoscelis adeliae) nesting along the Palmer Archipelago near Palmer Station, 2007-2009. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/abc50eed9138b75f54eaada0841b9b86" class="uri">https://doi.org/10.6073/pasta/abc50eed9138b75f54eaada0841b9b86</a>.</p>
+<p><strong>Gorman K. 2017.</strong> Structural size measurements and isotopic signatures of foraging among adult male and female chinstrap penguins (Pygoscelis antarctica) nesting along the Palmer Archipelago near Palmer Station, 2007-2009. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/2b1cff60f81640f182433d23e68541ce" class="uri">https://doi.org/10.6073/pasta/2b1cff60f81640f182433d23e68541ce</a>.</p>
+<p><strong>Gorman K. 2017.</strong> Structural size measurements and isotopic signatures of foraging among adult male and female gentoo penguins (Pygoscelis papua) nesting along the Palmer Archipelago near Palmer Station, 2007-2009. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/409c808f8fc9899d02401bdb04580af7" class="uri">https://doi.org/10.6073/pasta/409c808f8fc9899d02401bdb04580af7</a>.</p>
+<p><strong>Hlavac, Marek. 2018.</strong>. stargazer: Well-Formatted Regression and Summary Statistics Tables.
+R package version 5.2.2. <a href="https://CRAN.R-project.org/package=stargazer" class="uri">https://CRAN.R-project.org/package=stargazer</a></p>
+</div>

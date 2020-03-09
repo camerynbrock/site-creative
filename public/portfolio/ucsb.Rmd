@@ -1,0 +1,269 @@
+---
+title: "Visualizing UCSB Campus Profiles"
+author: "Cameryn Brock"
+date: "2019-12-09"
+output: html_document
+image: img/portfolio/ucsb.png
+showonlyimage: false
+weight: 10
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center")
+```
+
+
+
+Here we compare the percentage of white and minority students of total UCSB undergraduate students from 2008-2018 to demonstrate how the relative proportions are changing over time (Figure 1). Data is compiled from the annual UCSB Campus Profiles prepared by the Office of Budget and Planning through the Institutional Research, Planning, & Assessment Initiative (UCSB). 
+
+This dataset includes graduate and undergraduate students; however, we only used data for undergraduate students. Additionally, this dataset provides data for eight categories of ethnicities; however, to simplify for our purposes, we grouped the two categories with the smallest proportions of the total (American Indian / Alaskan students and E. Indian / Pakistani) within the 'Other' category. Lastly, again to simplify, we titled the Asian / Pacific Islander category as 'Asian', but this category still includes Pacific Islander students.  
+
+
+```{r}
+
+library(tidyverse)
+library(janitor)
+
+```
+
+
+```{r}
+
+# Read in and tidy data
+
+ucsb_profiles <- read_csv("ucsb_campus_profiles.csv") %>%
+  pivot_longer(cols = starts_with("20"),
+               names_to = "year",
+               values_to = "students_count") %>% 
+  clean_names() %>% 
+  rename("ethnicity" = ethnicity_domestic_enrollment) 
+
+```
+
+
+
+```{r, include = FALSE}
+
+# Exploration - here are unused graphs
+
+ucsb_viz <- ucsb_profiles %>% 
+  filter(!ethnicity == "Unknown",
+         !students_count == "na") %>% 
+  group_by(year, 
+           ethnicity,
+           student_level) %>% 
+  summarize(students_count = sum(students_count))
+  
+
+ucsb_viz$year <- substr(ucsb_viz$year, 0, 4) %>% 
+  as.numeric()
+
+# Explore data
+
+# Line graph
+
+ggplot(ucsb_viz, aes(x = year,
+                     y = students_count,
+                     color = ethnicity)) +
+  geom_line() +
+  facet_wrap(~student_level) +
+  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) +
+  theme_minimal() + 
+  labs(x = "Year",
+       y = "Number of Students",
+       color = "Ethnicity")
+
+ggsave("students_level.png",
+       height = 4.5,
+       width = 7.5)
+
+# Area graph
+
+ucsb_pct <- ucsb_viz %>% 
+  group_by(year,
+           student_level) %>% 
+  mutate(students_pct = students_count / sum(students_count) * 100)
+
+ggplot(ucsb_pct, aes(x = year,
+                     y = students_pct)) +
+  geom_area(aes(fill = fct_reorder(ethnicity, 
+                                  students_pct,
+                                  .desc = TRUE)),
+            color = "black",
+            alpha = 0.85,
+            size = 0.3) +
+  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) + 
+  theme_minimal() +
+  facet_wrap(~student_level) +
+  labs(x = "Year",
+       y = "Percentage of UCSB Students",
+       fill = "Ethnicity")
+
+ggplot(ucsb_pct, aes(x = year,
+                     y = students_pct)) + 
+  geom_col(aes(fill = fct_reorder(ethnicity, 
+                                  students_pct,
+                                  .desc = TRUE))) + 
+  facet_wrap(~student_level) + 
+  theme_minimal() + 
+  labs(x = "Year",
+       y = "Percentage of UCSB Students",
+       fill = "Ethnicity")
+
+# Percents as line graph?
+
+ggplot(ucsb_pct, aes(x = year,
+                     y = students_pct)) + 
+  geom_line(aes(color = ethnicity)) +
+  facet_wrap(~student_level) +
+  theme_minimal()
+
+# Attempt to make cool two-sided bar graph for white vs. non-white undergraduates
+
+ucsb_pct_undergrad <- ucsb_pct %>% 
+  filter(student_level == "Undergraduate (individuals)") %>% 
+  ungroup(student_level) %>% 
+  select(year,
+         ethnicity,
+         students_pct)
+
+ucsb_undergrad_white <- ucsb_pct_undergrad %>% 
+  filter(ethnicity == "White") %>% 
+  mutate(students_pct = -students_pct)
+
+ucsb_undergrad_nonwhite <- ucsb_pct_undergrad %>% 
+  filter(!ethnicity == "White") %>% 
+  mutate(ethnicity = case_when(
+    ethnicity == "Asian / Pacific Islander" ~ "Asian",
+    ethnicity == "Black / African American" ~ "Black",
+    ethnicity == "Chicano" ~ "Chicanx",
+    ethnicity == "Latino" ~ "Latinx",
+    T ~ "Other")) %>% 
+    group_by(year,
+           ethnicity) %>% 
+  summarize(students_pct = sum(students_pct))
+
+ggplot() + 
+  geom_col(data = ucsb_undergrad_nonwhite, 
+           aes(x = year,
+               y = students_pct,
+               fill = ethnicity),
+           alpha = 0.9,
+           color = "grey70",
+           size = 0.25) +
+  geom_col(data = ucsb_undergrad_white, 
+           aes(x = year,
+               y = students_pct,
+               fill = ethnicity),
+           alpha = 0.9,
+           color = "grey70",
+           size = 0.25) +
+  geom_hline(aes(yintercept = 0),
+             color = "grey75",
+             size = 0.6) +
+  scale_fill_brewer(palette = "Blues") +
+  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) +
+  scale_y_continuous(breaks = c(-50, -25, 0, 25, 50),
+                     labels = abs) +
+  theme_minimal() +
+  theme(plot.margin = unit(c(1, 5.8, 1, 1), "lines"),
+        legend.position = c(1.11, 0.605)) +
+  labs(x = "Year",
+       y = "Percentage of UCSB Undergraduate Students",
+       fill = "Ethnicity")
+
+```
+
+```{r}
+
+# Final graph - vertical version of white v minority bars over time
+
+ggplot() + 
+  geom_col(data = ucsb_undergrad_nonwhite, 
+           aes(x = year,
+               y = students_pct,
+               fill = ethnicity),
+           alpha = 0.9,
+           color = "grey70",
+           size = 0.25) +
+  geom_col(data = ucsb_undergrad_white, 
+           aes(x = year,
+               y = students_pct,
+               fill = ethnicity),
+           alpha = 0.9,
+           color = "grey70",
+           size = 0.25) +
+  geom_hline(aes(yintercept = 0),
+             color = "grey75",
+             size = 0.5) +
+  scale_fill_brewer(palette = "Blues") +
+  scale_x_reverse(breaks = seq(2008, 2018, by = 1)) +
+  scale_y_continuous(breaks = c(-50, -25, 0, 25, 50),
+                     labels = abs) +
+  theme_minimal() +
+  theme(plot.margin = unit(c(1.25, 5, 1, 1), "lines"),
+        legend.position = c(1.08, 0.5),
+        panel.grid.minor.y = element_blank()) +
+  
+  coord_flip() +
+  labs(x = "Year",
+       y = "Percentage of UCSB Undergraduate Students",
+       fill = "Ethnicity") +
+  annotate("text", x = 2008, y = -8.9, label = "54.4%", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2009, y = -8.9, label = "52.5", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2010, y = -8.9, label = "50.4", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2011, y = -8.9, label = "47.7", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2012, y = -8.9, label = "44.8", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2013, y = -8.9, label = "42.6", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2014, y = -8.9, label = "40.1", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2015, y = -8.9, label = "38.5", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2016, y = -8.9, label = "37.9", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2017, y = -8.9, label = "36.6", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2018, y = -8.9, label = "35.8", color = "white", size = 3, hjust = 0) + # End of white
+  annotate("text", x = 2008, y = 2.7, label = "45.6%", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2009, y = 2.7, label = "47.5", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2010, y = 2.7, label = "49.6", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2011, y = 2.7, label = "52.3", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2012, y = 2.7, label = "55.2", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2013, y = 2.7, label = "57.4", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2014, y = 2.7, label = "59.9", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2015, y = 2.7, label = "61.5", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2016, y = 2.7, label = "62.1", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2017, y = 2.7, label = "63.4", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2018, y = 2.7, label = "64.2", color = "white", size = 3, hjust = 0) +
+  annotate("text", x = 2007, y = -33, label = "Percent White Students", size = 3, hjust = 0) +
+  annotate("text", x = 2007, y = 2.2, label = "Percent Minority Students", size = 3, hjust = 0)
+
+
+```
+
+
+```{r, include = FALSE}
+
+# Information for percentages on graph
+
+ucsb_undergrad_white
+
+ucsb_nonwhite_sum <- ucsb_undergrad_nonwhite %>% 
+  group_by(year) %>% 
+  summarize(students_pct_sum = sum(students_pct))
+
+ucsb_nonwhite_sum
+
+```
+
+
+***Figure 1.** Percentages of white and minority UCSB Undergraduate Students (2008-2018). The category titled 'Asian' includes Asian and Pacific Islander students. The majority of the students within the category titled 'Other' are American Indian / Alaskan students and E. Indian / Pakistani students. Data is compiled from the annual UCSB Campus Profiles prepared by the Office of Budget and Planning through the Institutional Research, Planning, & Assessment Initiative (UCSB). The format of this graph was inspired by [work from the Pew Research Center](https://www.pewresearch.org/fact-tank/2014/08/18/u-s-public-schools-expected-to-be-majority-minority-starting-this-fall/).*  
+
+**Key Takeaways**
+
+- At UCSB from 2008-2010, the percentage of white undergraduate students was higher than the percentage of all minority undergraduate students combined (>50%). 
+- In 2011, the percentage of white undergraduate students was lower than the percentage of collective minority undergraduate students for the first time (in this data set). The percentage of collective minority students continued to increase 2011-2018.
+- Much of the increase in the percentage of collective minority students is due to an increase in the percentage of Asian and Chicanx students. The percentage of Asian and Chicanx students increased by 7.9% and 6.0% from 2008 to 2018, respectively.
+ 
+### Data
+
+**UCSB**. Campus Profiles, 2008-2018. Office of Budget and Planning. http://bap.ucsb.edu/institutional.research/campus.profiles/ 

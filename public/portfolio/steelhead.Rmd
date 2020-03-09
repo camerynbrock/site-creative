@@ -1,0 +1,119 @@
+---
+title: Steelhead Salmon Passage across the Bonneville Dam
+subtitle: "ESM 244 Assignment 2 Task 2"
+author: "Cameryn Brock"
+date: "2020-02-20"
+output: html_document
+image: img/portfolio/steelhead_graph.png
+showonlyimage: false
+weight: 10
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 5.5)
+```
+
+
+![][1]
+
+***Figure 1**. Steelhead salmon (Onchorhynchus mykiss). Credit: Duane River, [US Fish and Wildlife Service](https://www.fws.gov/fisheries/freshwater-fish-of-america/steelhead_trout.html).*
+
+Dams create an obstacle for migrating fish. Some dams have constructed fish ladders to address this issue. Here, we will use data from Columbia River DART to analyze adult steelhead salmon (*Onchorhynchus mykiss*) passage through the fish ladder at the Bonneville Dam from 1940-2019. 
+
+**Data**: Columbia River DART, Columbia Basin Research, University of Washington. (2019). Adult Passage Graphics & Text. Available from http://www.cbr.washington.edu/dart/query/adult_graph_text.
+
+More information on dams' impacts on salmon and steelhead in the Columbia River Basin can be found in [this report by the Northwest Power and Conservation Council](https://www.nwcouncil.org/reports/columbia-river-history/damsimpacts). 
+
+
+#### Attach packages and read in data
+
+```{r}
+
+library(tidyverse)
+library(lubridate)
+library(paletteer)
+
+steelhead <- read_csv("cbr_fish_passage_bonneville_allyrs_steelhead.csv")
+
+```
+
+#### Time series using daily counts
+
+```{r}
+
+# Only using year, date, and value - the rest all only contain one value per variable
+# Have to omit negative value counts, assuming these are an error
+
+steelhead_date <- steelhead %>% 
+  select(year, "mm-dd", value) %>%
+  rename(mm_dd = "mm-dd") %>% 
+  filter(-value < 0) %>% 
+  separate(mm_dd, c("day", "month"), "-") %>% 
+  unite("date", c("day", "month", "year"), sep = " ") %>% 
+  mutate(date = dmy(date)) %>% 
+  drop_na()
+
+ggplot(steelhead_date, aes(x = date,
+                           y = value)) + 
+  geom_line(color = "indianred") + 
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() + 
+  labs(x = "Date",
+       y = "Steelhead Count (Daily)")
+
+```
+
+***Figure 2**. Daily counts of adult steelhead salmon (Onchorhynchus mykiss) passing the Bonneville Dam (1940-2019). Data is from Columbia River DART's Adult Passage Graphics & Text dataset.*
+
+It is difficult to distinguish an overall trend when visualizing the daily counts. Let's look at monthly and annual counts. 
+
+
+#### Seasonal plot using monthly steelhead counts
+
+```{r}
+
+steelhead_parsed <- steelhead_date %>% 
+  mutate(month = month(date, label = TRUE),
+         year = year(date))
+
+steelhead_monthly <- steelhead_parsed %>% 
+  group_by(month, year) %>% 
+  summarize(value = sum(value))
+
+ggplot(steelhead_monthly, aes(x = month, y = value, group = year)) +
+  geom_line(aes(color = year)) +
+  scale_color_paletteer_c("grDevices::TealRose") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() + 
+  labs(x = "Month",
+       y = "Steelhead Count (Monthly)",
+       color = "Year")
+
+```
+
+***Figure 3**. Monthly counts of adult steelhead salmon (Onchorhynchus mykiss) passing the Bonneville Dam (1940-2019) grouped by year. Data is from Columbia River DART's Adult Passage Graphics & Text dataset.*
+
+Visualizing the time series data monthly reveals a large seasonal trend in adult steelhead salmon passage, with the majority of salmon passing from June to October and the largest peak in August. This most likely reflects seasonal migration. Additionally, summer counts from 1990-2019 (reddish lines) seem overall larger than counts from 1940-1990 (turquoise and cream lines). 
+
+#### Annual steelhead counts
+
+```{r}
+
+steelhead_annual <- steelhead_parsed %>% 
+  group_by(year) %>% 
+  summarize(value = sum(value))
+
+ggplot(steelhead_annual, aes(x = year, y = value)) + 
+  geom_line(color = "cyan4") + 
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() + 
+  labs(x = "Year",
+       y = "Steelhead Count (Yearly)")
+
+```
+
+***Figure 4**. Annual counts of adult steelhead salmon (Onchorhynchus mykiss) passing the Bonneville Dam (1940-2019). Data is from Columbia River DART's Adult Passage Graphics & Text dataset.*
+
+There is an increasing trend in annual adult steelhead salmon counts from 1940-2010. After 2010, however, annual salmon counts quickly drop to below 1940 levels in 2019. 
+
+[1]: /img/portfolio/steelhead.png

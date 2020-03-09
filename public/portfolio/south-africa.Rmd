@@ -1,0 +1,39 @@
+---
+title: 'Photography: South Africa'
+author: "Cameryn Brock"
+date: "2020-03-09"
+image: img/portfolio/south-africa/sugarbird_2.jpg
+showonlyimage: true
+output: html_document
+---
+
+![][1]
+
+![][2]
+
+![][3]
+
+![][4]
+
+![][5]
+
+![][6]
+
+
+![][7]
+
+
+[1]: /img/portfolio/south-africa/sugarbird_2.jpg
+
+[2]: /img/portfolio/south-africa/oryx.jpg
+
+[3]: /img/portfolio/south-africa/sunbird.jpg
+
+[4]: /img/portfolio/south-africa/cuckoo.jpg
+
+[5]: /img/portfolio/south-africa/sugarbird_1.jpg
+
+[6]: /img/portfolio/south-africa/zebras.jpg
+
+[7]: /img/portfolio/south-africa/ceili.jpg
+

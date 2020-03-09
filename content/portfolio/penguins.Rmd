@@ -1,0 +1,325 @@
+---
+title: "Predicting Penguin Mass"
+author: "Cameryn Brock"
+date: "2019-12-09"
+output: html_document
+image: img/portfolio/penguin.png
+showonlyimage: false
+weight: 10
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+
+![][1]
+
+Adelie Penguin (*Pygoscelis adeliae*) jumping into finals week. 
+Credit: [Ralph Lee Hopkins, *National Geographic*](https://kids.nationalgeographic.com/animals/birds/adelie-penguin/)
+
+
+Here we explored the potential for predicting penguin mass in Adelie, Chinstrap, and Gentoo penguins considering flipper length, sex, and species. We used data recorded at Palmer Station, LTER, Antarctica, compiled from the Environmental Data Initative (Gorman 2017).
+
+```{r}
+
+library(tidyverse)
+library(stargazer)
+library(kableExtra)
+library(janitor)
+library(effsize)
+
+
+penguins <- read_csv("lter_penguin_species.csv")
+
+```
+
+```{r, include = FALSE}
+penguins_relationships <- penguins %>% 
+  filter(sex %in% c("FEMALE", "MALE")) %>% 
+  mutate(sex = case_when(sex == "FEMALE" ~ "Female",
+                         sex == "MALE" ~ "Male")) %>% 
+  select(species, 
+         sex,
+         flipper_length_mm,
+         body_mass_g)
+
+## Explore the data
+
+# species - cat
+# sex - cat
+# flipper length - num
+# body mass - num
+
+# scatter plot
+
+ggplot(penguins_relationships) +
+  geom_point(aes(x = flipper_length_mm,
+                  y = body_mass_g,
+                 color = sex),
+             show.legend = FALSE) +
+  facet_wrap(~species) +
+  theme_minimal() 
+
+# What is the difference in mean body mass and flipper length for each species/sex? 
+
+penguins_summary <- penguins_relationships %>% 
+  group_by(species, sex) %>% 
+  summarize(mean_body_mass = mean(body_mass_g),
+            mean_flipper_length = mean(flipper_length_mm))
+
+penguins_summary
+
+# density plot
+
+ggplot(penguins_relationships) +
+  geom_density(aes(x = flipper_length_mm,
+                  fill = sex,
+                  color = sex),
+               alpha = 0.6,
+               show.legend = FALSE) + 
+  facet_wrap(~species,
+             nrow = 3) + 
+  theme_minimal()
+
+# We can see that the relationships seem (and conceptually make sense to be) linear here. 
+
+```
+
+
+```{r}
+
+# Create a factor for labels
+
+penguins_relationships_ggplot <- penguins_relationships
+
+penguins_relationships_ggplot$species <- factor(
+  penguins_relationships_ggplot$species,
+  levels = c("Adelie Penguin (Pygoscelis adeliae)",
+  "Chinstrap penguin (Pygoscelis antarctica)",
+  "Gentoo penguin (Pygoscelis papua)"),
+  labels = c("Adelie Penguin \n (Pygoscelis adeliae)",
+             "Chinstrap Penguin \n (Pygoscelis antarctica)",
+             "Gentoo Penguin \n (Pygoscelis papua)"))
+
+```
+
+
+
+```{r, fig.height = 6}
+
+# Final scatter plot
+
+ggplot(penguins_relationships_ggplot) +
+  geom_point(aes(x = flipper_length_mm,
+                  y = body_mass_g,
+                 color = sex),
+             alpha = 0.8) +
+  scale_color_manual(values = c("rosybrown3", 
+                                "steelblue4")) +
+  facet_wrap(~species,
+             nrow = 3) +
+  theme_minimal() +
+  theme(legend.position = c(0.86, 0.86),
+        legend.background = element_rect(fill = "white",
+                                         color = "grey70",
+                                         size = 0.2)) +
+  labs(x = "Flipper Length (mm)",
+       y = "Body Mass (g)",
+       color = "Sex") 
+
+
+```
+
+***Figure 1.** Penguin species, sex, flipper length, and body mass. Data was recorded at Palmer Station, LTER, Antarctica and compiled from the Environmental Data Initiative (Gorman 2017)*
+
+**Key Takeaways**
+
+- There appears to be a positive correlation between body mass and flipper length among both sexes in all species. This makes sense intuitively, as both likely increase with penguin overall size (i.e. height). 
+- Gentoo penguins are the largest in terms of both body mass and flipper length. Chinstrap and adelie penguins are similar to each other in these regards, though it is difficult to determine how similar due to relatively less data for Gentoo penguins. 
+- In all three species, males tend to have a larger body mass and longer flipper length than females. 
+
+
+```{r, include = FALSE}
+
+# Our data appears linear and conceptually would make sense to be linear. So, let's see how a multi linear regression model works. 
+
+## Multi linear regression model
+
+penguins_lm <- lm(body_mass_g ~ flipper_length_mm + species + sex, data = penguins_relationships)
+  
+penguins_lm
+summary(penguins_lm)
+
+# Flipper length, sex, species: 
+# Mass = -365.82 + 20.03(Flipper Length) - 87.63(Chinstrap) + 836.26(Gentoo) + 530.38(Male)
+# R2 = 0.8669
+
+penguins_lm_2 <- lm(body_mass_g ~ species + sex, data = penguins_relationships)
+
+penguins_lm_2
+summary(penguins_lm_2)
+
+# Sex, species:
+# Mass = -3372.39 + 26.92(Chinstrap) + 1377.86(Gentoo) + 667.56(Male)
+# R2 = 0.8468
+
+penguins_lm_3 <- lm(body_mass_g ~ flipper_length_mm + species, data = penguins_relationships)
+
+penguins_lm_3
+summary(penguins_lm_3)
+
+# Flipper length, species:
+# Mass = -4013.18 + 40.61(Flipper Length) -205.38(Chinstrap) + 284.52(Gentoo)
+# R2 = 0.787
+
+# Let's look at the AIC values...
+
+AIC(penguins_lm)
+# AIC = 4740.774  
+
+AIC(penguins_lm_2)
+# AIC = 4785.594
+
+AIC(penguins_lm_3)
+# AIC = 4895.267
+
+# Thinking conceptually about these predictor variables, collinearity and interaction among terms are not an issue.
+
+## penguins_lm (flipper length, sex, species) has the highest R2 value, lowest AIC value, AND makes the most sense conceptually (and considering our scatter plot), so we will go with that one.
+
+```
+
+***Table 1.** Summary of a multi-linear regression for predicting penguin body mass (g) with sex (male, female), flipper length (mm), and species (adelie, gentoo, chinstrap) as predictive variables. The data analyzed was recorded at Palmer Station, LTER, Antarctica and compiled from the Environmental Data Initiative (Gorman 2017)*
+
+<center>
+
+```{r, results = 'asis'}
+
+stargazer(penguins_lm, 
+          type = "html",
+          dep.var.labels = c("Body Mass (g)"),
+          covariate.labels = c("Flipper Length (mm)",
+                               "Species: Chinstrap",
+                               "Species: Gentoo",
+                               "Sex: Male",
+                               "Constant"))
+
+```
+
+</center>
+
+```{r, include = FALSE}
+
+# Check if assumptions of normality and homoscedasticity are satisfied
+
+plot(penguins_lm)
+
+# In residuals vs fitted, we see that the data mostly follows our assumptions. We can also see that the data is clearly grouped, likely by species or sex. We can also see here that the residuals don't seem to be correlated to each other. 
+# QQ plot is beautifully linear! Linearity between actual and estimated values. Yay! 
+
+```
+
+
+We checked whether our model satisfies the assumption of homoscedasticity (constant variance) with a plot of residuals vs fitted values. The residuals appeared even on each side of the horizontal line, and therefore satisfy this assumption. In this plot, we can also see the data seems grouped (horizontally), likely due to differences among species and sex.  
+
+We checked whether the residuals are normally distributed with a QQ plot. The QQ plot demonstrated a linear relationship, which confirms the residuals are normally distributed.
+
+Our adjusted R^2^, or coefficient of determination, of 0.865 means that 86.5% of the variance in penguin body mass is predictable from penguin flipper length, species, and sex. 
+
+- **Flipper Length**: we expect body mass to be 20.03g *more* on average for each 1mm increase in flipper length, if all other variables remain the same.
+- **Species, Chinstrap**: we expect Chinstrap penguins to weigh 87.63g on average *less* than Adelie penguins, if all other variables remain the same. 
+- **Species, Gentoo**: we expect Gentoo penguins to weigh 836.26g, on average, *more* than Adelie penguins, if all other variables remain the same.
+- **Sex, Male**: we expect male penguins to weigh 530.38g, on average, *more* than female penguins, if all other variables remain the same.  
+
+
+```{r, include = FALSE}
+
+# Predict masses with the predict() function 
+
+penguins_predictions_info <- data.frame(
+  species = 
+    c("Chinstrap penguin (Pygoscelis antarctica)",
+      "Adelie Penguin (Pygoscelis adeliae)",
+      "Gentoo penguin (Pygoscelis papua)"),
+  sex = 
+    c("Female",
+      "Male",
+      "Male"),
+  flipper_length_mm = 
+    c(195,
+      205,
+      220)
+)
+
+penguins_predictions <- predict(penguins_lm,
+                              newdata = penguins_predictions_info)
+
+penguins_predictions_table <- data.frame(
+  penguins_predictions_info,
+  penguins_predictions
+) %>% 
+  mutate(species = case_when(
+    species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap Penguin",
+    species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie Penguin",
+    species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo Penguin"))
+
+# Check actual results to double check we are in the right ballpark
+
+penguins_actual <- penguins_relationships %>% 
+  filter(
+    species == "Chinstrap penguin (Pygoscelis antarctica)" &
+      flipper_length_mm == (192:197) |
+      species == "Adelie Penguin (Pygoscelis adeliae)" & 
+      flipper_length_mm == (203:207) |
+      species == "Gentoo penguin (Pygoscelis papua)" & 
+      flipper_length_mm == (218:222)) 
+
+penguins_actual_summary <- penguins_actual %>% 
+  group_by(species) %>% 
+  summarize(mean_body_mass = mean(body_mass_g))
+
+penguins_actual_summary
+
+# Chinstrap: actual = 3500, prediction = 3451
+# Adelie: actual = 4300, prediction = 4270
+# Gentoo: actual = 5164, prediction = 5406
+
+# Pretty good!
+
+```
+
+***Table 2.** Predicted values for body mass (g) with our multi linear regression model. Predictive variables include species, sex, and flipper length (mm). Data was recorded at Palmer Station, LTER, Antarctica, compiled from the Environmental Data Initiative (Gorman 2017).*
+
+
+```{r}
+
+# Make a table with kableExtra to illustrate predictions 
+
+kable(penguins_predictions_table,
+      col.names = c("Species",
+                    "Sex",
+                    "Flipper Length (mm)",
+                    "Predicted Body Mass (g)"),
+      digits = 0,
+      align = 'c') %>% 
+        kable_styling(bootstrap_options = "hover")
+
+```
+
+
+### Citations
+
+**Gorman K. 2017.** Structural size measurements and isotopic signatures of foraging among adult male and female Adélie penguins (Pygoscelis adeliae) nesting along the Palmer Archipelago near Palmer Station, 2007-2009. Environmental Data Initiative. https://doi.org/10.6073/pasta/abc50eed9138b75f54eaada0841b9b86.
+
+**Gorman K. 2017.** Structural size measurements and isotopic signatures of foraging among adult male and female chinstrap penguins (Pygoscelis antarctica) nesting along the Palmer Archipelago near Palmer Station, 2007-2009. Environmental Data Initiative. https://doi.org/10.6073/pasta/2b1cff60f81640f182433d23e68541ce.
+
+**Gorman K. 2017.** Structural size measurements and isotopic signatures of foraging among adult male and female gentoo penguins (Pygoscelis papua) nesting along the Palmer Archipelago near Palmer Station, 2007-2009. Environmental Data Initiative. https://doi.org/10.6073/pasta/409c808f8fc9899d02401bdb04580af7.
+
+**Hlavac, Marek. 2018.**. stargazer: Well-Formatted Regression and Summary Statistics Tables.
+ R package version 5.2.2. https://CRAN.R-project.org/package=stargazer 
+
+[1]: /img/portfolio/adelie_penguin.jpg

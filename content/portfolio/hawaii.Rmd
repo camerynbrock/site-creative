@@ -1,0 +1,100 @@
+---
+title: "Hawaii Land Use and Watersheds"
+subtitle: "2017"
+author: "Cameryn Brock"
+date: "2020-02-20"
+output: html_document
+image: img/portfolio/hawaii.png
+showonlyimage: false
+weight: 20
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 5.5)
+```
+
+#### Data source
+
+**Land use**: Hawaii Statewide GIS Program. Land Use Land Cover of main Hawaiian Islands (2017). Available from http://geoportal.hawaii.gov/datasets/land-use-land-cover-lulc 
+
+**Watersheds**: Hawaii Statewide GIS Program. Surface Water Hyrdrologic Unit Boundaries (Watersheds) for the 8 major Hawaiian Islands (2017). Available from http://geoportal.hawaii.gov/datasets/watersheds 
+
+##### Attach packages and read in data
+
+```{r}
+
+library(tidyverse)
+library(here)
+library(sf)
+library(tmap)
+
+```
+
+```{r}
+
+land_use <- read_sf(dsn = "Land_Use_Land_Cover_LULC",
+                  layer = "Land_Use_Land_Cover_LULC") %>% 
+  select(landcover) %>% 
+  filter(!landcover == "0") %>% 
+  st_simplify(dTolerance = 0.0005)
+
+watersheds <- read_sf(dsn = "Watersheds",
+                      layer = "Watersheds") %>% 
+  select(wuname) %>%  
+  st_simplify(dTolerance = 0.0005)
+
+# Checked CRS for both dataframes & both are EPSG: 4326
+
+```
+
+#### View land use and watershed data separately
+
+```{r}
+
+plot(land_use)
+
+plot(watersheds)
+
+```
+
+#### Visualize land use and watersheds with ggplot
+
+```{r}
+
+ggplot() +
+  geom_sf(data = land_use,
+          aes(fill = landcover),
+          color = NA,
+          alpha = 0.9,
+          show.legend = FALSE) + 
+  geom_sf(data = watersheds,
+          color = "black",
+          size = 0.15,
+          fill = NA) + 
+  theme_minimal()
+
+```
+
+#### Interactive map of land use and watersheds with tmap
+
+<center>
+
+```{r}
+
+tmap_mode("view")
+
+hawaii_tmap <- tm_basemap("CartoDB.VoyagerNoLabels") + 
+  tm_shape(land_use,
+           name = "Land Use") + 
+  tm_fill("landcover",
+          legend.show = FALSE) +
+  tm_shape(watersheds,
+           name = "Watersheds") +
+  tm_borders("gray30") + 
+  tm_layout(title = "Hawaii Land Use and Watersheds")
+  
+hawaii_tmap
+
+```
+
+</center>

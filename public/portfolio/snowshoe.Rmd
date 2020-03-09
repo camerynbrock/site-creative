@@ -1,0 +1,148 @@
+---
+title: "Weight Distribution for Snowshoe Hares in Bonanza Creek"
+subtitle: "1999-2012"
+author: "Cameryn Brock"
+date: "2020-02-06"
+output: html_document
+image: img/portfolio/snowshoe_graph.png
+showonlyimage: false
+weight: 10
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+![][1]
+
+Figure 1. *Snowshoe hare (Lepus americanus) in its summer coat. Credit: Daniel Dagenais, [Canadian Wildlife Federation](http://www.hww.ca/en/wildlife/mammals/snowshoe-hare.html).*
+
+Snowshoe hares (*Lepus americanus*) are considered a keystone species in boreal forests due to their role as  a critical food source for carnivores. Here we will explore the seasonal weight distribution of adults and juveniles in spring-fall. We will use a subset of data from the snowshoe hare physical data in Bonanza Creek Experimental Forest dataset (1999-2012), including
+
+- Hare age (adult or juvenile)
+- Weight
+- Month captured
+
+**Data**: Kielland K., F. S. Chapin, R. W. Ruess. 2017. Snowshoe hare physical data in Bonanza Creek Experimental Forest: 1999-2012. Environmental Data Initiative. https://doi.org/10.6073/pasta/03dce4856d79b91557d8e6ce2cbcdc14.
+
+
+```{r}
+
+library(tidyverse) 
+library(lubridate)
+library(ggridges)
+library(janitor)
+library(kableExtra)
+
+```
+
+```{r}
+
+## Read in and clean up data, split dates with lubridate
+
+snowshoe <- read_csv("showshoe_lter.csv") 
+
+snowshoe_dates <- snowshoe %>% 
+  mutate(date = lubridate::mdy(date),
+         month = lubridate::month(date),
+         month = month.abb[month],
+         month = fct_relevel(month, levels = month.abb))
+
+```
+
+```{r}
+
+## Explore snowshoe hare weights for adults and juveniles
+
+# Need to filter to just values with confirmed A and J ages
+# dropping February because there is only one data point for this month
+
+snowshoe_age <- snowshoe_dates %>% 
+  select(age, date, weight, month) %>% 
+  drop_na() %>% 
+  filter(!age %in% c("u", "U", "?", "3/4/13", "1/4/13", "1/2/13")) %>% 
+  filter(!month == "Feb") %>% 
+  mutate(age = case_when(age == "j" ~ "J",
+                         age == "J" ~ "J",
+                         T ~ "A")) %>% 
+  mutate(age = factor(age,
+                      levels = c("A", "J"),
+                      labels = c("Adult", "Juvenile")))
+
+```
+
+```{r}
+
+## Table with seasonal summary statistics for subset used for graph
+
+snowshoe_season <- snowshoe_age %>% 
+  mutate(season = case_when(
+    month %in% c("Mar", "Apr", "May") ~ "Spring",
+    month %in% c("Jun", "Jul", "Aug") ~ "Summer",
+    month %in% c("Sep", "Oct", "Nov") ~ "Fall")) %>% 
+  mutate(season = factor(season,
+                         levels = c("Spring",
+                                    "Summer",
+                                    "Fall")))
+
+snowshoe_age_summary <- snowshoe_season %>% 
+  group_by(age, season) %>% 
+  summarize(mean_weight = mean(weight),
+            sd_weight = sd(weight),
+            sample_size = n()) %>% 
+  mutate_if(is.numeric, format, digits = 3)
+
+kable(snowshoe_age_summary,
+      align = "c",
+      col.names = c("Age",
+                    "Season",
+                    "Mean Weight (g)",
+                    "Standard Deviation (g)",
+                    "Sample Size"),
+      caption = "* Summary statistics for seasonal weight data for juvenile and adult snowshoe hares (Lepus americanus) from 1999-2012. Spring is March, April, and May; Summer is June, July, and August; and Fall is September, October, and November. Winter data is not included because only one data point was available (February 2007, 1620g male), possibly because the line between adult and juvenile is more clear from spring-fall. Data is from Bonanza Creek LTER's snowshoe hare physical data in Bonanza Creek Experimental Forest Dataset (1999-2012).*") %>% 
+  kable_styling(bootstrap_options = "hover") %>% 
+  column_spec(1, bold = T) %>% 
+  collapse_rows(columns = 1, valign = "middle")
+
+```
+
+
+```{r, fig.width = 10, fig.height = 6, fig.fullwidth = TRUE}
+
+ggplot(snowshoe_age, aes(x = weight,
+                       y = fct_rev(month))) + 
+  geom_density_ridges(jittered_points = TRUE,
+                      point_size = 0.75,
+                      aes(point_color = age,
+                          fill = age,
+                          color = age),
+                      alpha = 0.65,
+                      size = 0.4,
+                      rel_min_height = 0.0001) +
+  labs(x = "Weight (g)",
+       y = "Month") +
+  scale_fill_manual(values = c("burlywood", "chartreuse3")) +
+  scale_discrete_manual("point_color", 
+                        values = c("burlywood4", "chartreuse4")) +
+  scale_color_manual(values = c("burlywood4", "chartreuse4")) +
+  theme_minimal() +
+  theme(legend.position = c(0.235, 0.87),
+        legend.background = element_rect(color = "grey90"),
+        legend.title = element_blank())
+
+```
+
+<span style="color: grey;">
+Figure 2. *Monthly weight distributions of adult and juvenile snowshoe hares (Lepus americanus) from 1999-2012. Winter data is not included because only one data point was available (February 2007, 1620g male), possibly because the line between adult and juvenile is more clear from spring-fall. Data is from Bonanza Creek LTER's snowshoe hare physical data in Bonanza Creek Experimental Forest Dataset (1999-2012).*
+</span>
+
+**Key takeaways**
+
+*Adults*: Adult weights are relatively similar from spring to fall, with a higher standard deviation during summer months. The difference in summer could be due to differences in weight of pregnant (heavier than average in June) and post-partum (lighter than average in August) females. However, this would not explain the two females with much lower than average weights in May. Overall heavier weights in fall could be in preparation for making it through the winter months. 
+
+*Juveniles*: Juveniles steadily (it appears linearly) gain weight from June-November. The large standard deviations for juveniles, particularly during the summer months, is likely due to variation in birth date. 
+
+
+[1]: /img/portfolio/snowshoe.jpg

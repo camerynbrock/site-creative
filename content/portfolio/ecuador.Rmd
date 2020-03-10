@@ -1,0 +1,42 @@
+---
+title: 'Photography: Ecuador'
+author: "Cameryn Brock"
+date: "2020-03-09"
+image: img/portfolio/ecuador/green_thorntail.jpg
+showonlyimage: true
+output: html_document
+weight: 50
+---
+
+![][1]
+
+![][2]
+
+![][3]
+
+![][4]
+
+![][5]
+
+![][6]
+
+![][7]
+
+
+[1]: /img/portfolio/ecuador/capuchin.jpg
+
+[2]: /img/portfolio/ecuador/green_thorntail.jpg
+
+[3]: /img/portfolio/ecuador/kyle.jpg
+
+[4]: /img/portfolio/ecuador/scarlet_macaw.jpg
+
+[5]: /img/portfolio/ecuador/rufous_tailed_hummingbird.jpg
+
+[6]: /img/portfolio/ecuador/napo.jpg
+
+[7]: /img/portfolio/ecuador/butterfly.jpg
+
+
+
+

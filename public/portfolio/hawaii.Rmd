@@ -6,7 +6,7 @@ date: "2020-02-20"
 output: html_document
 image: img/portfolio/hawaii.png
 showonlyimage: false
-weight: 20
+weight: 80
 ---
 
 ```{r setup, include=FALSE}

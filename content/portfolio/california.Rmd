@@ -1,0 +1,42 @@
+---
+title: "Photography: California"
+author: "Cameryn Brock"
+date: "2020-03-09"
+image: img/portfolio/california/dolphins.jpg
+showonlyimage: true
+output: html_document
+weight: 10
+---
+
+![][1]
+
+![][2]
+
+![][3]
+
+![][4]
+
+![][5]
+
+![][6]
+
+![][7]
+
+![][8]
+
+
+[1]: /img/portfolio/california/hendrys.jpg
+
+[2]: /img/portfolio/california/dolphins.jpg
+
+[3]: /img/portfolio/california/tahoe.jpg
+
+[4]: /img/portfolio/california/big_sur_mcway.jpg
+
+[5]: /img/portfolio/california/snipe.jpg
+
+[6]: /img/portfolio/california/big_sur_beach.jpg
+
+[7]: /img/portfolio/california/lupins.jpg
+
+[8]: /img/portfolio/california/black_bear.jpg

@@ -12,23 +12,31 @@
     
     
     <item>
-      <title>Name of the work 3</title>
-      <link>/portfolio/work3/</link>
-      <pubDate>Sat, 05 Nov 2016 19:44:32 +0530</pubDate>
+      <title>Photography: California</title>
+      <link>/portfolio/california/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/work3/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&#39;t them.&lt;/p&gt;</description>
+      <guid>/portfolio/california/</guid>
+      <description> </description>
     </item>
     
     <item>
-      <title>Steelhead Salmon Passage across the Bonneville Dam</title>
-      <link>/portfolio/steelhead/</link>
-      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
+      <title>Visualizing UCSB Campus Profiles</title>
+      <link>/portfolio/ucsb/</link>
+      <pubDate>Mon, 09 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/steelhead/</guid>
-      <description>Figure 1. Steelhead salmon (Onchorhynchus mykiss). Credit: Duane River, US Fish and Wildlife Service.
-Dams create an obstacle for migrating fish. Some dams have constructed fish ladders to address this issue. Here, we will use data from Columbia River DART to analyze adult steelhead salmon (Onchorhynchus mykiss) passage through the fish ladder at the Bonneville Dam from 1940-2019.
-Data: Columbia River DART, Columbia Basin Research, University of Washington. (2019). Adult Passage Graphics &amp;amp; Text.</description>
+      <guid>/portfolio/ucsb/</guid>
+      <description>Here we compare the percentage of white and minority students of total UCSB undergraduate students from 2008-2018 to demonstrate how the relative proportions are changing over time (Figure 1). Data is compiled from the annual UCSB Campus Profiles prepared by the Office of Budget and Planning through the Institutional Research, Planning, &amp;amp; Assessment Initiative (UCSB).
+This dataset includes graduate and undergraduate students; however, we only used data for undergraduate students.</description>
+    </item>
+    
+    <item>
+      <title>Photography: South Africa</title>
+      <link>/portfolio/south-africa/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/portfolio/south-africa/</guid>
+      <description> </description>
     </item>
     
     <item>
@@ -39,6 +47,15 @@ Data: Columbia River DART, Columbia Basin Research, University of Washington. (2
       <guid>/portfolio/snowshoe/</guid>
       <description>Figure 1. Snowshoe hare (Lepus americanus) in its summer coat. Credit: Daniel Dagenais, Canadian Wildlife Federation.
 Snowshoe hares (Lepus americanus) are considered a keystone species in boreal forests due to their role as a critical food source for carnivores. Here we will explore the seasonal weight distribution of adults and juveniles in spring-fall. We will use a subset of data from the snowshoe hare physical data in Bonanza Creek Experimental Forest dataset (1999-2012), including</description>
+    </item>
+    
+    <item>
+      <title>Photography: Ecuador</title>
+      <link>/portfolio/ecuador/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/portfolio/ecuador/</guid>
+      <description> </description>
     </item>
     
     <item>
@@ -53,13 +70,12 @@ Figure 1. Penguin species, sex, flipper length, and body mass. Data was recorded
     </item>
     
     <item>
-      <title>Visualizing UCSB Campus Profiles</title>
-      <link>/portfolio/ucsb/</link>
-      <pubDate>Mon, 09 Dec 2019 00:00:00 +0000</pubDate>
+      <title>Photography: Australia</title>
+      <link>/portfolio/australia/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/ucsb/</guid>
-      <description>Here we compare the percentage of white and minority students of total UCSB undergraduate students from 2008-2018 to demonstrate how the relative proportions are changing over time (Figure 1). Data is compiled from the annual UCSB Campus Profiles prepared by the Office of Budget and Planning through the Institutional Research, Planning, &amp;amp; Assessment Initiative (UCSB).
-This dataset includes graduate and undergraduate students; however, we only used data for undergraduate students.</description>
+      <guid>/portfolio/australia/</guid>
+      <description> </description>
     </item>
     
     <item>
@@ -74,30 +90,14 @@ Attach packages and read in data library(tidyverse) library(here) library(sf) li
     </item>
     
     <item>
-      <title>Photography: California</title>
-      <link>/portfolio/california_photography/</link>
-      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      <title>Steelhead Salmon Passage across the Bonneville Dam</title>
+      <link>/portfolio/steelhead/</link>
+      <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/california_photography/</guid>
-      <description> </description>
-    </item>
-    
-    <item>
-      <title>Photography: South Africa</title>
-      <link>/portfolio/south-africa/</link>
-      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/portfolio/south-africa/</guid>
-      <description> </description>
-    </item>
-    
-    <item>
-      <title>Name of the work 1</title>
-      <link>/portfolio/work1/</link>
-      <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
-      
-      <guid>/portfolio/work1/</guid>
-      <description>&lt;p&gt;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life. One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&lt;/p&gt;</description>
+      <guid>/portfolio/steelhead/</guid>
+      <description>Figure 1. Steelhead salmon (Onchorhynchus mykiss). Credit: Duane River, US Fish and Wildlife Service.
+Dams create an obstacle for migrating fish. Some dams have constructed fish ladders to address this issue. Here, we will use data from Columbia River DART to analyze adult steelhead salmon (Onchorhynchus mykiss) passage through the fish ladder at the Bonneville Dam from 1940-2019.
+Data: Columbia River DART, Columbia Basin Research, University of Washington. (2019). Adult Passage Graphics &amp;amp; Text.</description>
     </item>
     
     <item>

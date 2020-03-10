@@ -3,7 +3,7 @@ date: "2016-11-05T21:05:33+05:30"
 title: About me
 ---
 
-I am interested in using effective data visualization to more broadly communicate science to promote wildlife conservation. My background is in ecological research, primarily addressing anthropogenic impacts on birds worldwide. Now, I am working towards a master's degree at the Bren School of Environmental Science & Management (UCSB) to marry my ecology experience with technical skills in data analysis to drive real solutions.
+I am interested in using effective data visualization to more broadly communicate science and promote wildlife conservation. My background is in ecological research, primarily addressing anthropogenic impacts on birds worldwide. Now, I am working towards a master's degree at the Bren School of Environmental Science & Management (UCSB) to marry my ecology experience with technical skills in data analysis to drive real solutions.
 
 When I'm not doing schoolwork, I enjoy all things outdoors! My main hobbies are birding, wildlife photography, and hiking. I also enjoy vegan cooking, typically with the help of my two cats as sous chefs. 
 

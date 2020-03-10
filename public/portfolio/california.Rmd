@@ -1,5 +1,5 @@
 ---
-title: "Photography: California"
+title: "Photography: Central California"
 author: "Cameryn Brock"
 date: "2020-03-09"
 image: img/portfolio/california/dolphins.jpg
@@ -20,23 +20,19 @@ weight: 10
 
 ![][6]
 
-![][7]
-
-![][8]
 
 
 [1]: /img/portfolio/california/hendrys.jpg
 
 [2]: /img/portfolio/california/dolphins.jpg
 
-[3]: /img/portfolio/california/tahoe.jpg
+[3]: /img/portfolio/california/great_horned.jpg
 
-[4]: /img/portfolio/california/big_sur_mcway.jpg
+[4]: /img/portfolio/california/big_sur_beach.jpg
 
-[5]: /img/portfolio/california/snipe.jpg
+[5]: /img/portfolio/california/black_necked_stilt.jpg
 
-[6]: /img/portfolio/california/big_sur_beach.jpg
+[6]: /img/portfolio/california/big_sur_mcway.jpg
 
-[7]: /img/portfolio/california/lupins.jpg
 
-[8]: /img/portfolio/california/black_bear.jpg
+

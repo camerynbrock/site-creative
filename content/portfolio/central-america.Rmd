@@ -4,7 +4,7 @@ author: "Cameryn Brock"
 image: img/portfolio/central-america/baby_monkey.jpg
 showonlyimage: true
 output: html_document
-weight: 90
+weight: 100
 ---
 
 ```{r setup, include=FALSE}

@@ -1,0 +1,50 @@
+---
+title: "Photography: Tahoe"
+author: "Cameryn Brock"
+date: "2020-03-09"
+image: img/portfolio/tahoe/tahoe_cover.jpg
+showonlyimage: true
+output: html_document
+weight: 85
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+![][1]
+
+![][2]
+
+![][3]
+
+![][4]
+
+![][5]
+
+![][6]
+
+![][7]
+
+![][8]
+
+
+[1]: /img/portfolio/tahoe/emerald_bay.jpg
+
+[2]: /img/portfolio/tahoe/black_bear_2.jpg
+
+[3]: /img/portfolio/tahoe/tahoe.jpg
+
+[4]: /img/portfolio/tahoe/wood_duck.jpg
+
+[5]: /img/portfolio/tahoe/lupins.jpg
+
+[6]: /img/portfolio/tahoe/snipe.jpg
+
+[7]: /img/portfolio/tahoe/silver_lake.jpg
+
+[8]: /img/portfolio/tahoe/black_bear.jpg
+
+
+

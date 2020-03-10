@@ -6,7 +6,7 @@ date: "2020-02-20"
 output: html_document
 image: img/portfolio/steelhead_graph.png
 showonlyimage: false
-weight: 100
+weight: 95
 ---
 
 ```{r setup, include=FALSE}

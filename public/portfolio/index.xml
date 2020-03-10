@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>Photography: California</title>
+      <title>Photography: Central California</title>
       <link>/portfolio/california/</link>
       <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
       
@@ -90,11 +90,11 @@ Attach packages and read in data library(tidyverse) library(here) library(sf) li
     </item>
     
     <item>
-      <title>Photography: Central America</title>
-      <link>/portfolio/central-america/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Photography: Tahoe</title>
+      <link>/portfolio/tahoe/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/central-america/</guid>
+      <guid>/portfolio/tahoe/</guid>
       <description> </description>
     </item>
     
@@ -107,6 +107,15 @@ Attach packages and read in data library(tidyverse) library(here) library(sf) li
       <description>Figure 1. Steelhead salmon (Onchorhynchus mykiss). Credit: Duane River, US Fish and Wildlife Service.
 Dams create an obstacle for migrating fish. Some dams have constructed fish ladders to address this issue. Here, we will use data from Columbia River DART to analyze adult steelhead salmon (Onchorhynchus mykiss) passage through the fish ladder at the Bonneville Dam from 1940-2019.
 Data: Columbia River DART, Columbia Basin Research, University of Washington. (2019). Adult Passage Graphics &amp;amp; Text.</description>
+    </item>
+    
+    <item>
+      <title>Photography: Central America</title>
+      <link>/portfolio/central-america/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/portfolio/central-america/</guid>
+      <description> </description>
     </item>
     
   </channel>

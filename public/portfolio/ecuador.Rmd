@@ -22,6 +22,10 @@ weight: 50
 
 ![][7]
 
+![][8]
+
+![][9]
+
 
 [1]: /img/portfolio/ecuador/capuchin.jpg
 
@@ -35,7 +39,11 @@ weight: 50
 
 [6]: /img/portfolio/ecuador/napo.jpg
 
-[7]: /img/portfolio/ecuador/butterfly.jpg
+[7]: /img/portfolio/ecuador/quilotoa.jpg
+
+[8]: /img/portfolio/ecuador/gecko.jpg
+
+[9]: /img/portfolio/ecuador/waterfall.jpg
 
 
 

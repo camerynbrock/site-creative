@@ -10,11 +10,11 @@ googleAnalytics = ""
 [params]
   # Style options: default (pink), blue, green, pink, red, sea, violet
   # Use custom.css for your custom styling
-  style = "default"
-  description = "Describe your website"
+  style = "sea"
+  description = "Cameryn Brock's portfolio website"
   copyright = "&copy;2020 Cameryn Brock"
   sidebarAbout = [
-    "I am a master's student at the Bren School of Environmental Science & Management with emphases in Convervation Planning and Environmental Data Science.",
+    "I am a master's student at the Bren School of Environmental Science & Management with emphases in Convervation Planning and Environmental Data Science. I also enjoy photography!",
     "Originally from South Lake Tahoe, currently based in Santa Barbara."
   ]
   # Contact page

@@ -22,6 +22,10 @@ weight: 70
 
 ![][7]
 
+![][8]
+
+![][9]
+
 
 [1]: /img/portfolio/australia/kangaroo_1.jpg
 
@@ -35,4 +39,8 @@ weight: 70
 
 [6]: /img/portfolio/australia/kangaroo_2.jpg
 
-[7]: /img/portfolio/australia/spiderweb.jpg
+[7]: /img/portfolio/australia/kookaburra.jpg
+
+[8]: /img/portfolio/australia/border_ranges.jpg
+
+[9]: /img/portfolio/australia/koala_2.jpg

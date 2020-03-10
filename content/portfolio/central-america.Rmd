@@ -1,0 +1,54 @@
+---
+title: 'Photography: Central America'
+author: "Cameryn Brock"
+image: img/portfolio/central-america/baby_monkey.jpg
+showonlyimage: true
+output: html_document
+weight: 90
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+![][1]
+
+![][2]
+
+![][3]
+
+![][4]
+
+![][5]
+
+![][6]
+
+![][7]
+
+![][8]
+
+![][9]
+
+![][10]
+
+
+[1]: /img/portfolio/central-america/squirrel_monkey.jpg
+
+[2]: /img/portfolio/central-america/bajo_del_tigre.jpg
+
+[3]: /img/portfolio/central-america/coati.jpg
+
+[4]: /img/portfolio/central-america/nicaragua_farmacia.jpg
+
+[5]: /img/portfolio/central-america/sloth.jpg
+
+[6]: /img/portfolio/central-america/baby_monkey.jpg
+
+[7]: /img/portfolio/central-america/walk.jpg
+
+[8]: /img/portfolio/central-america/spider_monkey.jpg
+
+[9]: /img/portfolio/central-america/seastars.jpg
+
+[10]: /img/portfolio/central-america/capuchins.jpg

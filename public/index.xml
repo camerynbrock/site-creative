@@ -90,6 +90,15 @@ Attach packages and read in data library(tidyverse) library(here) library(sf) li
     </item>
     
     <item>
+      <title>Photography: Central America</title>
+      <link>/portfolio/central-america/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/portfolio/central-america/</guid>
+      <description> </description>
+    </item>
+    
+    <item>
       <title>Steelhead Salmon Passage across the Bonneville Dam</title>
       <link>/portfolio/steelhead/</link>
       <pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
